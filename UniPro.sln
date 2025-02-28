@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPro.Host", "UniPro.Host\UniPro.Host.csproj", "{7C6562F7-E691-43C5-820D-3B1F40BC84C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPro.Domain", "UniPro.Domain\UniPro.Domain.csproj", "{58936911-7B7C-4E22-960F-CDFCE2393113}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPro.Features", "UniPro.Features\UniPro.Features.csproj", "{55FFE23A-D066-47A0-9249-9ED5133650FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPro.Infrastructure", "UniPro.Infrastructure\UniPro.Infrastructure.csproj", "{99726BC5-3C4F-4496-88AF-FED2CFB2F224}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,17 @@ Global
 		{7C6562F7-E691-43C5-820D-3B1F40BC84C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C6562F7-E691-43C5-820D-3B1F40BC84C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C6562F7-E691-43C5-820D-3B1F40BC84C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58936911-7B7C-4E22-960F-CDFCE2393113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58936911-7B7C-4E22-960F-CDFCE2393113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58936911-7B7C-4E22-960F-CDFCE2393113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58936911-7B7C-4E22-960F-CDFCE2393113}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55FFE23A-D066-47A0-9249-9ED5133650FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55FFE23A-D066-47A0-9249-9ED5133650FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55FFE23A-D066-47A0-9249-9ED5133650FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55FFE23A-D066-47A0-9249-9ED5133650FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99726BC5-3C4F-4496-88AF-FED2CFB2F224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99726BC5-3C4F-4496-88AF-FED2CFB2F224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99726BC5-3C4F-4496-88AF-FED2CFB2F224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99726BC5-3C4F-4496-88AF-FED2CFB2F224}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
