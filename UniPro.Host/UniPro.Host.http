@@ -1,0 +1,6 @@
+@UniPro.Host_HostAddress = http://localhost:5170
+
+GET {{UniPro.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
