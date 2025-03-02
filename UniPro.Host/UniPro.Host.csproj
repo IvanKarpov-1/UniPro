@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\UniPro.Features\UniPro.Features.csproj" />
       <ProjectReference Include="..\UniPro.Infrastructure\UniPro.Infrastructure.csproj" />
     </ItemGroup>
 

@@ -63,4 +63,8 @@ public partial class StAppIdToUserId
 
     [InverseProperty("StAppIdToUserId")]
     public virtual StUseridMapping? StUseridMapping { get; set; }
+    
+    //---------------------------
+    [InverseProperty("StAppIdToUserId")]
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

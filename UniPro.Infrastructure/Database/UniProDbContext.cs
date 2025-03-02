@@ -86,6 +86,8 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
 
     public virtual DbSet<StUseridMapping> StUseridMappings { get; set; }
     
+    public virtual DbSet<User> Users { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<StAllAuthRecipeUser>(entity =>
@@ -497,6 +499,17 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
             entity.Property(e => e.SupertokensUserId).IsFixedLength();
 
             entity.HasOne(d => d.StAppIdToUserId).WithOne(p => p.StUseridMapping).HasConstraintName("st_userid_mapping_supertokens_user_id_fkey");
+        });
+
+        //---------------------------------------------
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => new { e.AppId, e.UserId }).HasName("users_pkey");
+        
+            entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
+            entity.Property(e => e.UserId).IsFixedLength();
+        
+            entity.HasOne(d => d.StAppIdToUserId).WithMany(p => p.Users).HasConstraintName("st_users_user_id_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);
