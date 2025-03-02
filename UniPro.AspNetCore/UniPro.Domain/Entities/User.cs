@@ -20,16 +20,30 @@ public class User
     
     [StringLength(255)]
     public string FirstName { get; set; } = null!;
+    
     [StringLength(255)]
     public string LastName { get; set; } = null!;
+    
     [StringLength(255)]
     public string Patronymic { get; set; } = null!;
+    
     [StringLength(1024)]
     public string Avatar { get; set; } = null!;
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
     
+    [StringLength(36)]
+    public string PhoneNumber { get; set; } = null!;
+    
+    public DateTime CreatedAt { get; set; }
+    
+    public DateTime UpdatedAt { get; set; }
+
     [ForeignKey("AppId, UserId")]
     [InverseProperty("Users")]
-    public required StAppIdToUserId StAppIdToUserId { get; set; }
+    public StAppIdToUserId StAppIdToUserId { get; set; } = null!;
+    
+    [InverseProperty("Student")]
+    public StudentInfo StudentInfo { get; set; } = null!;
+    
+    [InverseProperty("Teacher")]
+    public TeacherInfo TeacherInfo { get; set; } = null!;
 }

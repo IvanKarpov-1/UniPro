@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UniPro.Domain.Entities;
 using UniPro.Domain.Entities.SuperTokens;
+using Task = UniPro.Domain.Entities.Task;
 
 namespace UniPro.Infrastructure.Database;
 
@@ -86,7 +87,30 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
 
     public virtual DbSet<StUseridMapping> StUseridMappings { get; set; }
     
+    //---------------------------------------------
     public virtual DbSet<User> Users { get; set; }
+    
+    public virtual DbSet<StudentInfo> StudentInfos { get; set; }
+    
+    public virtual DbSet<StudentGroup> StudentGroups { get; set; }
+    
+    public virtual DbSet<Department> Departments { get; set; }
+    
+    public virtual DbSet<Academic> Academics { get; set; }
+    
+    public virtual DbSet<University> Universities { get; set; }
+    
+    public virtual DbSet<TeacherInfo> TeacherInfos { get; set; }
+    
+    public virtual DbSet<Course> Courses { get; set; }
+    
+    public virtual DbSet<Task> Tasks { get; set; }
+    
+    public virtual DbSet<TaskType> TaskTypes { get; set; }
+    
+    public virtual DbSet<StudentTask> StudentTasks { get; set; }
+    
+    public virtual DbSet<Grade> Grades { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -510,6 +534,57 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
             entity.Property(e => e.UserId).IsFixedLength();
         
             entity.HasOne(d => d.StAppIdToUserId).WithMany(p => p.Users).HasConstraintName("st_users_user_id_fkey");
+        });
+        
+        modelBuilder.Entity<StudentInfo>(entity =>
+        {
+            entity.HasKey(e => new { e.AppId, e.StudentId });
+        
+            entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
+            entity.Property(e => e.StudentId).IsFixedLength();
+        
+            entity.HasOne(d => d.Student).WithOne(p => p.StudentInfo);
+            entity.HasOne(d => d.StudentGroup).WithMany(p => p.StudentInfos);
+            entity.HasOne(d => d.Department).WithMany(p => p.StudentInfos);
+            entity.HasOne(d => d.Academic).WithMany(p => p.StudentInfos);
+            entity.HasOne(d => d.University).WithMany(p => p.StudentInfos);
+            entity.HasMany(d => d.StudentTasks).WithOne(p => p.Student);
+        });
+        
+        modelBuilder.Entity<TeacherInfo>(entity =>
+        {
+            entity.HasKey(e => new { e.AppId, e.TeacherId });
+        
+            entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
+            entity.Property(e => e.TeacherId).IsFixedLength();
+        
+            entity.HasOne(d => d.Teacher).WithOne(p => p.TeacherInfo);
+            entity.HasOne(d => d.Department).WithMany(p => p.TeacherInfos);
+            entity.HasOne(d => d.Academic).WithMany(p => p.TeacherInfos);
+            entity.HasOne(d => d.University).WithMany(p => p.TeacherInfos);
+        });
+
+        modelBuilder.Entity<Task>(entity =>
+        {
+            entity.HasKey(e => new { e.TaskId });
+
+            entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
+            entity.Property(e => e.TeacherId).IsFixedLength();
+
+            entity.HasOne(d => d.Course).WithMany(p => p.Tasks);
+            entity.HasOne(d => d.TaskType).WithMany(p => p.Tasks);
+            entity.HasOne(d => d.Teacher).WithMany(p => p.Tasks);
+        });
+
+        modelBuilder.Entity<StudentTask>(entity =>
+        {
+            entity.HasKey(e => new { e.AppId, e.StudentId, e.TaskId });
+
+            entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
+            entity.Property(e => e.StudentId).IsFixedLength();
+            
+            entity.HasOne(d => d.Grade).WithOne(p => p.StudentTask);
+            entity.HasOne(d => d.Task).WithMany(p => p.StudentTasks);
         });
 
         OnModelCreatingPartial(modelBuilder);
