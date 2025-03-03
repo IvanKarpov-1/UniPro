@@ -24,8 +24,14 @@ app.use(
 // This exposes all the APIs from SuperTokens to the client.
 app.use(middleware());
 
+// For parsing application/json
+app.use(express.json());
+
+// For parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
 // An example API that requires session verification
-app.get("/sessioninfo", verifySession(), async (req: SessionRequest, res) => {
+app.get("/api/auth/sessioninfo", verifySession(), async (req: SessionRequest, res) => {
   let session = req.session;
   res.send({
     sessionHandle: session!.getHandle(),
@@ -34,8 +40,13 @@ app.get("/sessioninfo", verifySession(), async (req: SessionRequest, res) => {
   });
 });
 
+app.post("/api/auth/test", (req, res) => {
+  console.log(req);
+  res.send(req.body);
+})
+
 // In case of session related errors, this error handler
 // returns 401 to the client.
 app.use(errorHandler());
 
-app.listen(3001, () => console.log(`API Server listening on port 3001`));
+app.listen(process.env.APP_API_PORT, () => console.log(`API Server listening on port `, process.env.APP_API_PORT));

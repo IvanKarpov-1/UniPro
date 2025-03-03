@@ -18,14 +18,16 @@ export function getWebsiteDomain() {
 }
 
 export const SuperTokensConfig: TypeInput = {
-  supertokens: {
+  supertokens: {    
     // this is the location of the SuperTokens core.
-    connectionURI: "http://localhost:3567",
+    connectionURI: process.env.SUPERTOKENS_CORE ?? "http://localhost:3567",
+    apiKey: process.env.SUPERTOKENS_API_KEY,
   },
   appInfo: {
     appName: "UniPro",
     apiDomain: getApiDomain(),
     websiteDomain: getWebsiteDomain(),
+    apiBasePath: '/api/auth'
   },
   // recipeList contains all the modules that you want to
   // use from SuperTokens. See the full list here: https://supertokens.com/docs/guides
