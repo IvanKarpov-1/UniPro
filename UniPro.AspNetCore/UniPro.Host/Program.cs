@@ -1,7 +1,9 @@
 using Carter;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using UniPro.Features;
 using UniPro.Infrastructure;
+using UniPro.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,10 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+
+    await using var scope = app.Services.CreateAsyncScope();
+    await using var uniProDbContext = scope.ServiceProvider.GetRequiredService<UniProDbContext>();
+    await uniProDbContext.Database.MigrateAsync();
 }
 
 app.UseHttpsRedirection();
@@ -28,5 +34,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapCarter();
+
+app.MapGet("api/test", () => "Hello World!");
 
 app.Run();
