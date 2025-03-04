@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: adminPswd123!!!
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - datafiles:/var/lib/postgresql/data
     networks:
@@ -32,7 +32,7 @@ services:
       POSTGRESQL_TABLE_NAMES_PREFIX: st
       POSTGRESQL_CONNECTION_URI: postgresql://admin:adminPswd123!!!@unipro.postgres:5432/UniPro
     ports:
-      - 3567:3567
+      - "3567:3567"
     networks:
       - unipro_network
     healthcheck:
@@ -77,7 +77,7 @@ services:
       SUPERTOKENS_API_KEY: aZNk6R3yv9525DiT9AmJQszYfj6ctiFb
       POSTGRES_CONNECTION_STRING: postgresql://admin:adminPswd123!!!@unipro.postgres:5432/UniPro
     ports:
-      - 3001:3001
+      - "3001:3001"
     networks:
       - unipro_network
     restart: unless-stopped
@@ -94,7 +94,7 @@ services:
       CorsOrigins__: http://unipro.nginx-reverse-proxy
       ConnectionStrings__DefaultConnection: Host=unipro.postgres;Port=5432;Database=UniPro;Username=admin;Password=adminPswd123!!!;
     ports:
-      - 5001:5001
+      - "5001:5001"
     networks:
       - unipro_network
     restart: unless-stopped
@@ -105,7 +105,7 @@ services:
       - unipro.supertokens-node
       - unipro.aspnetcore
     ports:
-      - 80:80
+      - "80:80"
     networks:
       - unipro_network
     volumes:
