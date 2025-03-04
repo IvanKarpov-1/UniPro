@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // An example API that requires session verification
-app.get("/api/auth/sessioninfo", verifySession(), async (req: SessionRequest, res) => {
+app.get("/api/node/sessioninfo", verifySession(), async (req: SessionRequest, res) => {
   let session = req.session;
   res.send({
     sessionHandle: session!.getHandle(),
@@ -40,7 +40,7 @@ app.get("/api/auth/sessioninfo", verifySession(), async (req: SessionRequest, re
   });
 });
 
-app.post("/api/auth/test", (req, res) => {
+app.post("/api/node/test", (req, res) => {
   console.log(req);
   res.send(req.body);
 })
