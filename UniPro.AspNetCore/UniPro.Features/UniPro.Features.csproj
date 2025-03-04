@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\UniPro.Domain\UniPro.Domain.csproj" />
+      <ProjectReference Include="..\UniPro.Infrastructure\UniPro.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

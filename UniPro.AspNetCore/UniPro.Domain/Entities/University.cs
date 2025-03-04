@@ -9,6 +9,7 @@ public class University
 {
     [Key]
     public int UniversityId { get; set; }
+    
     [StringLength(256)]
     public string Name { get; set; } = null!;
     
