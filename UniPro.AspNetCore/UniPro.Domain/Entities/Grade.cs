@@ -4,13 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace UniPro.Domain.Entities;
 
-[PrimaryKey("AppId", "StudentId", "TaskId")]
+[PrimaryKey("StudentId", "TaskId")]
 public class Grade
 {
-    [Key]
-    [StringLength(64)]
-    public string AppId { get; set; } = null!;
-    
     [Key]
     [StringLength(36)]
     public string StudentId { get; set; } = null!;
@@ -22,7 +18,7 @@ public class Grade
     
     public bool IsAgreed { get; set; }
     
-    [ForeignKey("AppId, StudentId, TaskId")]
+    [ForeignKey("StudentId, TaskId")]
     [InverseProperty("Grade")]
     public StudentTask StudentTask { get; set; } = null!;
 }

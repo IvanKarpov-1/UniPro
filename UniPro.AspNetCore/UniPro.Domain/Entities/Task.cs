@@ -14,12 +14,10 @@ public class Task
     
     public int TaskTypeId { get; set; }
     
-    [StringLength(64)]
-    public string AppId { get; set; } = null!;
-    
     [StringLength(36)]
     public string TeacherId { get; set; } = null!;
-    
+        
+    [StringLength(128)]
     public string Name { get; set; } = null!;
     
     public DateTime? DueDate { get; set; }
@@ -32,7 +30,7 @@ public class Task
     [InverseProperty("Tasks")]
     public TaskType TaskType { get; set; } = null!;
 
-    [ForeignKey("AppId, TeacherId")]
+    [ForeignKey("TeacherId")]
     [InverseProperty("Tasks")]
     public TeacherInfo Teacher { get; set; } = null!;
     

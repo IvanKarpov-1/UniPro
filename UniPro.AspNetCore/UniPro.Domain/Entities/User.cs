@@ -5,10 +5,9 @@ using UniPro.Domain.Entities.SuperTokens;
 
 namespace UniPro.Domain.Entities;
 
-[PrimaryKey("AppId", "UserId")]
+[PrimaryKey("UserId")]
 public class User
 {
-    [Key]
     [Column("app_id")]
     [StringLength(64)]
     public string AppId { get; set; } = null!;
@@ -28,14 +27,14 @@ public class User
     public string Patronymic { get; set; } = null!;
     
     [StringLength(1024)]
-    public string Avatar { get; set; } = null!;
+    public string? Avatar { get; set; }
     
     [StringLength(36)]
     public string PhoneNumber { get; set; } = null!;
     
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
     
-    public DateTime UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     [ForeignKey("AppId, UserId")]
     [InverseProperty("Users")]

@@ -528,7 +528,7 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
         //---------------------------------------------
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => new { e.AppId, e.UserId }).HasName("users_pkey");
+            entity.HasKey(e => e.UserId).HasName("users_pkey");
         
             entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
             entity.Property(e => e.UserId).IsFixedLength();
@@ -538,9 +538,8 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
         
         modelBuilder.Entity<StudentInfo>(entity =>
         {
-            entity.HasKey(e => new { e.AppId, e.StudentId });
+            entity.HasKey(e => e.StudentId);
         
-            entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
             entity.Property(e => e.StudentId).IsFixedLength();
         
             entity.HasOne(d => d.Student).WithOne(p => p.StudentInfo);
@@ -553,9 +552,8 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
         
         modelBuilder.Entity<TeacherInfo>(entity =>
         {
-            entity.HasKey(e => new { e.AppId, e.TeacherId });
+            entity.HasKey(e => e.TeacherId);
         
-            entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
             entity.Property(e => e.TeacherId).IsFixedLength();
         
             entity.HasOne(d => d.Teacher).WithOne(p => p.TeacherInfo);
@@ -568,7 +566,6 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
         {
             entity.HasKey(e => new { e.TaskId });
 
-            entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
             entity.Property(e => e.TeacherId).IsFixedLength();
 
             entity.HasOne(d => d.Course).WithMany(p => p.Tasks);
@@ -578,9 +575,8 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
 
         modelBuilder.Entity<StudentTask>(entity =>
         {
-            entity.HasKey(e => new { e.AppId, e.StudentId, e.TaskId });
+            entity.HasKey(e => new { e.StudentId, e.TaskId });
 
-            entity.Property(e => e.AppId).HasDefaultValueSql("'public'::character varying");
             entity.Property(e => e.StudentId).IsFixedLength();
             
             entity.HasOne(d => d.Grade).WithOne(p => p.StudentTask);

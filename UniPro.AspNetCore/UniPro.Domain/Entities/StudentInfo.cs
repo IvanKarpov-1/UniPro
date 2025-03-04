@@ -4,13 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace UniPro.Domain.Entities;
 
-[PrimaryKey("AppId", "StudentId")]
+[PrimaryKey("StudentId")]
 public class StudentInfo
 {
-    [Key]
-    [StringLength(64)]
-    public string AppId { get; set; } = null!;
-    
     [Key]
     [StringLength(36)]
     public string StudentId { get; set; } = null!;
@@ -23,7 +19,7 @@ public class StudentInfo
     
     public int UniversityId { get; set; }
 
-    [ForeignKey("AppId, StudentId")]
+    [ForeignKey("StudentId")]
     [InverseProperty("StudentInfo")]
     public User Student { get; set; } = null!;
 
