@@ -7,5 +7,13 @@
   },
   "ConnectionStrings": {
     "DefaultConnection": ""
+  },
+  "CorsOrigins": [
+    ""
+  ],
+  "Jwt": {
+    "Domain": "{YOUR JWT DOMAIN}",
+    "Audience": "{YOUR JWT AUDIENCE}",
+    "RsaPublicKeyPath": "{PATH TO YOUR JWT RSA PUBLIC KEY}"
   }
 }

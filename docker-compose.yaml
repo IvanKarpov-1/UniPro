@@ -92,11 +92,16 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 5001
       CorsOrigins__: http://unipro.nginx-reverse-proxy
+      Jwt__Domain: unipro.supertokens-node
+      Jwt__Audience: htpp://unipro.aspnetcore
+      Jwt__RsaPublicKeyPath: /run/secrets/jwt_pub_key
       ConnectionStrings__DefaultConnection: Host=unipro.postgres;Port=5432;Database=UniPro;Username=admin;Password=adminPswd123!!!;
     ports:
       - "5001:5001"
     networks:
       - unipro_network
+    secrets:
+      - jwt_pub_key
     restart: unless-stopped
 
   unipro.nginx-reverse-proxy:
@@ -118,3 +123,7 @@ networks:
 
 volumes:
   datafiles:
+
+secrets:
+  jwt_pub_key:
+    file: ./secrets/jwt_pub_key.txt

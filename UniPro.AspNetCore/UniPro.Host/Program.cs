@@ -2,6 +2,7 @@ using Carter;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using UniPro.Features;
+using UniPro.Host;
 using UniPro.Infrastructure;
 using UniPro.Infrastructure.Database;
 
@@ -13,6 +14,7 @@ builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
 // Add infrastructure dependencies to the DI
+builder.Services.AddSecurity(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddFeatures(builder.Configuration);
 

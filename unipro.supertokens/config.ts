@@ -42,7 +42,9 @@ export const SuperTokensConfig: TypeInput = {
         }
       }
     }), 
-    Session.init(), 
+    Session.init({
+      useDynamicAccessTokenSigningKey: false,
+    }), 
     Dashboard.init(),
     UserRoles.init(),],
 };

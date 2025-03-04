@@ -481,3 +481,5 @@ appsettings.json
 appsettings.Development.json
 
 unipro.supertokens/dist/
+
+secrets/
