@@ -27,9 +27,11 @@ internal sealed class GetStudentGroupQueryHandler(
         GetStudentGroupQuery request,
         CancellationToken cancellationToken)
     {
-        var studentGroup = await dbContext.StudentGroups.FirstOrDefaultAsync(
-            x => x.StudentGroupId == request.StudentGroupId, 
-            cancellationToken);
+        var studentGroup = await dbContext
+            .StudentGroups
+            .Include(x => x.StudentInfos)
+            .ThenInclude(x => x.Student)
+            .FirstOrDefaultAsync(x => x.StudentGroupId == request.StudentGroupId, cancellationToken);
 
         return studentGroup is null 
             ? Result.Fail(new NotFoundError($"Student group with ID {request.StudentGroupId} not found.")) 
@@ -42,6 +44,7 @@ public sealed class GetStudentGroupEndpoint : ICarterModule
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapGet("/api/student-groups/{studentGroupId:int}", Handler)
+            .RequireAuthorization()
             .Produces<StudentGroupResponse>()
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithName("GetStudentGroup")

@@ -2,4 +2,5 @@ namespace UniPro.Features.Common.Responses;
 
 public sealed record UniversityResponse(
     int UniversityId,
-    string UniversityName);
+    string UniversityName,
+    List<AcademicResponse>? Academics);

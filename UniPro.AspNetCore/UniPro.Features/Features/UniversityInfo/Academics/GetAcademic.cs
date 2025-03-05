@@ -27,8 +27,10 @@ internal sealed class GetAcademicQueryHandler(
         GetAcademicQuery request,
         CancellationToken cancellationToken)
     {
-        var academic = await dbContext.Academics.FirstOrDefaultAsync(
-            x => x.AcademicId == request.AcademicId, 
+        var academic = await dbContext
+            .Academics
+            .Include(x => x.Departments)
+            .FirstOrDefaultAsync(x => x.AcademicId == request.AcademicId, 
             cancellationToken);
 
         return academic is null 
@@ -58,7 +60,7 @@ public sealed class GetAcademicEndpoint : ICarterModule
         var result = await sender.Send(query, cancellationToken);
         
         return result.IsSuccess ? 
-            Results.Ok((object?)result.Value) : 
+            Results.Ok(result.Value) : 
             result.Errors.ToProblem();
     }
 }

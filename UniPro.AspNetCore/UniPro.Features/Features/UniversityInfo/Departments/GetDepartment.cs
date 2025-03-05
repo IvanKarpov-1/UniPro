@@ -27,9 +27,10 @@ internal sealed class GetDepartmentQueryHandler(
         GetDepartmentQuery request,
         CancellationToken cancellationToken)
     {
-        var department = await dbContext.Departments.FirstOrDefaultAsync(
-            x => x.DepartmentId == request.DepartmentId, 
-            cancellationToken);
+        var department = await dbContext
+            .Departments
+            .Include(x => x.StudentGroups)
+            .FirstOrDefaultAsync(x => x.DepartmentId == request.DepartmentId, cancellationToken);
 
         return department is null 
             ? Result.Fail(new NotFoundError($"Department with ID {request.DepartmentId} not found.")) 

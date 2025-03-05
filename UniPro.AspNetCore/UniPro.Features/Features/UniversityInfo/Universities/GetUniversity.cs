@@ -27,9 +27,10 @@ internal sealed class GetUniversityQueryHandler(
         GetUniversityQuery request,
         CancellationToken cancellationToken)
     {
-        var university = await dbContext.Universities.FirstOrDefaultAsync(
-            x => x.UniversityId == request.UniversityId, 
-            cancellationToken);
+        var university = await dbContext
+            .Universities
+            .Include(x => x.Academics)
+            .FirstOrDefaultAsync(x => x.UniversityId == request.UniversityId, cancellationToken);
 
         return university is null 
             ? Result.Fail(new NotFoundError($"University with ID {request.UniversityId} not found.")) 
