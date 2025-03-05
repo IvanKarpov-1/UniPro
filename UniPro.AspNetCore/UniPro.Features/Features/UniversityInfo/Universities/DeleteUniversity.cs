@@ -59,7 +59,8 @@ public sealed class DeleteUniversityEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromRoute] int universityId,
-        ISender sender,
+        [FromServices] HttpContext ctx,
+        [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         var command = new DeleteUniversityCommand(universityId);

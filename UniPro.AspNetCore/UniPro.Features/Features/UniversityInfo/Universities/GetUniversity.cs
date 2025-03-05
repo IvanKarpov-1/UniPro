@@ -50,7 +50,7 @@ public sealed class GetUniversityEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromRoute] int universityId,
-        ISender sender,
+        [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         var query = new GetUniversityQuery(universityId);

@@ -38,7 +38,7 @@ internal sealed class AddUniversityCommandHandler(
 
         if (existentUniversity is not null)
         {
-            return Result.Fail(new AlreadyExistError("University with the same name already exists."));
+            return Result.Fail(new AlreadyExistError($"University with name \"{request.UniversityName}\" already exists."));
         }
 
         var newUniversity = new University
@@ -46,7 +46,7 @@ internal sealed class AddUniversityCommandHandler(
             Name = request.UniversityName,
         };
         
-        await dbContext.AddAsync(newUniversity, cancellationToken);
+        await dbContext.Universities.AddAsync(newUniversity, cancellationToken);
         
         var result = await dbContext.SaveChangesAsync(cancellationToken);
         
@@ -64,14 +64,15 @@ public sealed class AddUniversityEndpoint : ICarterModule
             .RequireAuthorization()
             .Produces<UniversityResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status409Conflict)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithTags(EndpointTags.Universities);
     }
 
     private static async Task<IResult> Handler(
         [FromBody] AddUniversityRequest request,
-        HttpContext ctx,
-        ISender sender,
+        [FromServices] HttpContext ctx,
+        [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         var command = request.Adapt<AddUniversityCommand>();

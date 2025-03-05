@@ -64,7 +64,8 @@ public sealed class UpdateUniversityEndpoint : ICarterModule
     private static async Task<IResult> Handler(
         [FromRoute] int universityId,
         [FromBody] UpdateUniversityRequest request,
-        ISender sender,
+        [FromServices] HttpContext ctx,
+        [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         var command = new UpdateUniversityCommand(universityId, request.NewUniversityName);

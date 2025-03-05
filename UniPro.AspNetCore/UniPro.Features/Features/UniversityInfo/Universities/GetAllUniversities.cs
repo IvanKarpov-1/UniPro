@@ -4,6 +4,7 @@ using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using UniPro.Features.Common;
@@ -41,7 +42,7 @@ public sealed class GetAllUniversitiesEndpoint : ICarterModule
     }
 
     private static async Task<IResult> Handler(
-        ISender sender,
+        [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         var query = new GetAllUniversitiesQuery();
