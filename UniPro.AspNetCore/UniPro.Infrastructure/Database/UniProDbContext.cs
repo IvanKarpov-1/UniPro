@@ -37,7 +37,7 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
 
     public virtual DbSet<StOauthLogoutChallenge> StOauthLogoutChallenges { get; set; }
 
-    public virtual DbSet<StOauthM2mToken> StOauthM2mTokens { get; set; }
+    public virtual DbSet<StOauthM2mToken> StOauthM2MTokens { get; set; }
 
     public virtual DbSet<StOauthSession> StOauthSessions { get; set; }
 
@@ -581,6 +581,27 @@ public partial class UniProDbContext(DbContextOptions<UniProDbContext> options) 
             
             entity.HasOne(d => d.Grade).WithOne(p => p.StudentTask);
             entity.HasOne(d => d.Task).WithMany(p => p.StudentTasks);
+        });
+        
+        modelBuilder.Entity<Academic>(entity =>
+        {
+            entity.HasKey(e => e.AcademicId);
+            
+            entity.HasOne(d => d.University).WithMany(p => p.Academics);
+        });
+
+        modelBuilder.Entity<Department>(entity =>
+        {
+            entity.HasKey(e => e.DepartmentId);
+
+            entity.HasOne(p => p.Academic).WithMany(d => d.Departments);
+        });
+
+        modelBuilder.Entity<StudentGroup>(entity =>
+        {
+            entity.HasKey(e => e.StudentGroupId);
+
+            entity.HasOne(p => p.Department).WithMany(d => d.StudentGroups);
         });
 
         OnModelCreatingPartial(modelBuilder);

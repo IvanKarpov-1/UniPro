@@ -18,4 +18,7 @@ public class University
     
     [InverseProperty("University")]
     public ICollection<TeacherInfo> TeacherInfos { get; set; } = new List<TeacherInfo>();
+    
+    [InverseProperty("University")]
+    public ICollection<Academic> Academics { get; set; } = new List<Academic>();
 }

@@ -9,6 +9,9 @@ public class Academic
 {
     [Key]
     public int AcademicId { get; set; }
+    
+    public int UniversityId { get; set; }
+    
     [StringLength(512)]
     public string Name { get; set; } = null!;
     
@@ -17,4 +20,11 @@ public class Academic
     
     [InverseProperty("Academic")]
     public ICollection<TeacherInfo> TeacherInfos { get; set; } = new List<TeacherInfo>();
+
+    [ForeignKey("UniversityId")]
+    [InverseProperty("Academics")]
+    public University University { get; set; } = null!;
+    
+    [InverseProperty("Academic")]
+    public ICollection<Department> Departments { get; set; } = new List<Department>();
 }
