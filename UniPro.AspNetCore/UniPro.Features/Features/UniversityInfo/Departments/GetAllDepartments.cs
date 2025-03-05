@@ -12,42 +12,42 @@ using UniPro.Features.Common.Responses;
 using UniPro.Features.Extensions;
 using UniPro.Infrastructure.Database;
 
-namespace UniPro.Features.Features.UniversityInfo.Academics;
+namespace UniPro.Features.Features.UniversityInfo.Departments;
 
-internal sealed record GetAllAcademicsQuery()
-    : IRequest<Result<List<AcademicResponse>>>;
+internal sealed record GetAllDepartmentsQuery()
+    : IRequest<Result<List<DepartmentResponse>>>;
 
-internal sealed class GetAllAcademicsQueryHandler(
+internal sealed class GetAllDepartmentsQueryHandler(
     UniProDbContext dbContext)
-    : IRequestHandler<GetAllAcademicsQuery, Result<List<AcademicResponse>>>
+    : IRequestHandler<GetAllDepartmentsQuery, Result<List<DepartmentResponse>>>
 {
-    public async Task<Result<List<AcademicResponse>>> Handle(
-        GetAllAcademicsQuery request,
+    public async Task<Result<List<DepartmentResponse>>> Handle(
+        GetAllDepartmentsQuery request,
         CancellationToken cancellationToken)
     {
-        var academics = await dbContext
-            .Academics
-            .ProjectToType<AcademicResponse>()
+        var departments = await dbContext
+            .Departments
+            .ProjectToType<DepartmentResponse>()
             .ToListAsync(cancellationToken);
 
-        return academics;
+        return departments;
     }
 }
 
-public sealed class GetAllAcademicsEndpoint : ICarterModule
+public sealed class GetAllDepartmentsEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/academics", Handler)
-            .Produces<List<AcademicResponse>>()
-            .WithTags(EndpointTags.Academics);
+        app.MapGet("/api/departments", Handler)
+            .Produces<List<DepartmentResponse>>()
+            .WithTags(EndpointTags.Departments);
     }
 
     private static async Task<IResult> Handler(
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
-        var query = new GetAllAcademicsQuery();
+        var query = new GetAllDepartmentsQuery();
         var result = await sender.Send(query, cancellationToken);
 
         return result.IsSuccess

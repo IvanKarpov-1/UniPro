@@ -12,42 +12,42 @@ using UniPro.Features.Common.Responses;
 using UniPro.Features.Extensions;
 using UniPro.Infrastructure.Database;
 
-namespace UniPro.Features.Features.UniversityInfo.Academics;
+namespace UniPro.Features.Features.UniversityInfo.StudentGroups;
 
-internal sealed record GetAllAcademicsQuery()
-    : IRequest<Result<List<AcademicResponse>>>;
+internal sealed record GetAllStudentGroupsQuery()
+    : IRequest<Result<List<StudentGroupResponse>>>;
 
-internal sealed class GetAllAcademicsQueryHandler(
+internal sealed class GetAllStudentGroupsQueryHandler(
     UniProDbContext dbContext)
-    : IRequestHandler<GetAllAcademicsQuery, Result<List<AcademicResponse>>>
+    : IRequestHandler<GetAllStudentGroupsQuery, Result<List<StudentGroupResponse>>>
 {
-    public async Task<Result<List<AcademicResponse>>> Handle(
-        GetAllAcademicsQuery request,
+    public async Task<Result<List<StudentGroupResponse>>> Handle(
+        GetAllStudentGroupsQuery request,
         CancellationToken cancellationToken)
     {
-        var academics = await dbContext
-            .Academics
-            .ProjectToType<AcademicResponse>()
+        var studentGroups = await dbContext
+            .StudentGroups
+            .ProjectToType<StudentGroupResponse>()
             .ToListAsync(cancellationToken);
 
-        return academics;
+        return studentGroups;
     }
 }
 
-public sealed class GetAllAcademicsEndpoint : ICarterModule
+public sealed class GetAllStudentGroupsEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/academics", Handler)
-            .Produces<List<AcademicResponse>>()
-            .WithTags(EndpointTags.Academics);
+        app.MapGet("/api/student-groups", Handler)
+            .Produces<List<StudentGroupResponse>>()
+            .WithTags(EndpointTags.StudentGroups);
     }
 
     private static async Task<IResult> Handler(
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
-        var query = new GetAllAcademicsQuery();
+        var query = new GetAllStudentGroupsQuery();
         var result = await sender.Send(query, cancellationToken);
 
         return result.IsSuccess
