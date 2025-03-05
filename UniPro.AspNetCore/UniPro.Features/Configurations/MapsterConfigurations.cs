@@ -19,9 +19,17 @@ public static class MapsterConfigurations
         TypeAdapterConfig<Department, DepartmentResponse>
             .ForType()
             .Map(dest => dest.DepartmentName, src => src.Name);
-        
+
         TypeAdapterConfig<StudentGroup, StudentGroupResponse>
             .ForType()
             .Map(dest => dest.StudentGroupName, src => src.Name);
+
+        TypeAdapterConfig<StudentInfo, StudentInfoResponse>
+            .ForType()
+            .Map(dest => dest.FirstName, src => src.Student.FirstName)
+            .Map(dest => dest.LastName, src => src.Student.LastName)
+            .Map(dest => dest.Patronymic, src => src.Student.Patronymic)
+            .Map(dest => dest.Avatar, src => src.Student.Avatar)
+            .Map(dest => dest.PhoneNumber, src => src.Student.PhoneNumber);
     }
 }
