@@ -36,9 +36,9 @@ internal sealed class GetStudentInfoQueryHandler(
             .Include(x => x.StudentGroup)
             .FirstOrDefaultAsync(x => x.StudentId == request.StudentId, cancellationToken);
 
-        return studentInfo is null 
-            ? Result.Fail(new NotFoundError($"Student with ID {request.StudentId} not found.")) 
-            : Result.Ok(studentInfo.Adapt<StudentInfoResponse>());
+        return studentInfo is not null
+            ? Result.Ok(studentInfo.Adapt<StudentInfoResponse>())
+            : Result.Fail(new NotFoundError($"Student with ID {request.StudentId} not found."));
     }
 }
 

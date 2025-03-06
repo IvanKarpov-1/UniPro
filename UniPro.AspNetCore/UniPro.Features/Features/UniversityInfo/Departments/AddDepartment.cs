@@ -59,7 +59,7 @@ internal sealed class AddDepartmentCommandHandler(
         
         var result = await dbContext.SaveChangesAsync(cancellationToken);
         
-        return result == 0
+        return result > 0
             ? Result.Ok(newDepartment.Adapt<DepartmentResponse>())
             : Result.Fail(new InternalServerError());
     }
@@ -69,7 +69,7 @@ public sealed class AddDepartmentEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost<DepartmentResponse>("/api/departments", Handler)
+        app.MapPost("/api/departments", Handler)
             .RequireAuthorization()
             .Produces<DepartmentResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
@@ -80,15 +80,18 @@ public sealed class AddDepartmentEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromBody] AddDepartmentRequest request,
-        [FromServices] HttpContext ctx,
+        [FromServices] IHttpContextAccessor ctx,
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         var command = request.Adapt<AddDepartmentCommand>();
         var result = await sender.Send(command, cancellationToken);
 
-        return result.IsSuccess ? 
-            Results.CreatedAtRoute("GetDepartment", new { DepartmentId = result.Value.DepartmentId }) : 
-            result.Errors.ToProblem();
+        return result.IsSuccess
+            ? Results.CreatedAtRoute(
+                "GetDepartment",
+                new { DepartmentId = result.Value.DepartmentId },
+                result.Value) 
+            : result.Errors.ToProblem();
     }
 }

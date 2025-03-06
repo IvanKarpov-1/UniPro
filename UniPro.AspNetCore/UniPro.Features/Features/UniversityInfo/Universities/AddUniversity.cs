@@ -50,7 +50,7 @@ internal sealed class AddUniversityCommandHandler(
         
         var result = await dbContext.SaveChangesAsync(cancellationToken);
         
-        return result == 0
+        return result > 0
             ? Result.Ok(newUniversity.Adapt<UniversityResponse>())
             : Result.Fail(new InternalServerError());
     }
@@ -60,7 +60,7 @@ public sealed class AddUniversityEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost<UniversityResponse>("/api/universities", Handler)
+        app.MapPost("/api/universities", Handler)
             .RequireAuthorization()
             .Produces<UniversityResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
@@ -71,15 +71,18 @@ public sealed class AddUniversityEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromBody] AddUniversityRequest request,
-        [FromServices] HttpContext ctx,
+        [FromServices] IHttpContextAccessor ctx,
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         var command = request.Adapt<AddUniversityCommand>();
         var result = await sender.Send(command, cancellationToken);
 
-        return result.IsSuccess ? 
-            Results.CreatedAtRoute("GetUniversity", new { UniversityId = result.Value.UniversityId }) : 
-            result.Errors.ToProblem();
+        return result.IsSuccess
+            ? Results.CreatedAtRoute(
+                "GetUniversity",
+                new { UniversityId = result.Value.UniversityId },
+                result.Value)
+            : result.Errors.ToProblem();
     }
 }

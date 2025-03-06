@@ -33,9 +33,9 @@ internal sealed class GetAcademicQueryHandler(
             .FirstOrDefaultAsync(x => x.AcademicId == request.AcademicId, 
             cancellationToken);
 
-        return academic is null 
-            ? Result.Fail(new NotFoundError($"Academic with ID {request.AcademicId} not found.")) 
-            : Result.Ok(academic.Adapt<AcademicResponse>());
+        return academic is not null
+            ? Result.Ok(academic.Adapt<AcademicResponse>())
+            : Result.Fail(new NotFoundError($"Academic with ID {request.AcademicId} not found."));
     }
 }
 
@@ -52,7 +52,7 @@ public sealed class GetAcademicEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromRoute] int academicId,
-        [FromServices] HttpContext ctx,
+        [FromServices] IHttpContextAccessor ctx,
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {

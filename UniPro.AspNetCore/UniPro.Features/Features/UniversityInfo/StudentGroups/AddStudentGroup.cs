@@ -59,7 +59,7 @@ internal sealed class AddStudentGroupCommandHandler(
         
         var result = await dbContext.SaveChangesAsync(cancellationToken);
         
-        return result == 0
+        return result > 0
             ? Result.Ok(newStudentGroup.Adapt<StudentGroupResponse>())
             : Result.Fail(new InternalServerError());
     }
@@ -69,7 +69,7 @@ public sealed class AddStudentGroupEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost<StudentGroupResponse>("/api/student-groups", Handler)
+        app.MapPost("/api/student-groups", Handler)
             .RequireAuthorization()
             .Produces<StudentGroupResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
@@ -80,15 +80,18 @@ public sealed class AddStudentGroupEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromBody] AddStudentGroupRequest request,
-        [FromServices] HttpContext ctx,
+        [FromServices] IHttpContextAccessor ctx,
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         var command = request.Adapt<AddStudentGroupCommand>();
         var result = await sender.Send(command, cancellationToken);
 
-        return result.IsSuccess ? 
-            Results.CreatedAtRoute("GetStudentGroup", new { StudentGroupId = result.Value.StudentGroupId }) : 
-            result.Errors.ToProblem();
+        return result.IsSuccess
+            ? Results.CreatedAtRoute(
+                "GetStudentGroup",
+                new { StudentGroupId = result.Value.StudentGroupId },
+                result.Value)
+            : result.Errors.ToProblem();
     }
 }

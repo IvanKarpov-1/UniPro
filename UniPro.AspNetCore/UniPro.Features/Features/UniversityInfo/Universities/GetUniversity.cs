@@ -32,9 +32,9 @@ internal sealed class GetUniversityQueryHandler(
             .Include(x => x.Academics)
             .FirstOrDefaultAsync(x => x.UniversityId == request.UniversityId, cancellationToken);
 
-        return university is null 
-            ? Result.Fail(new NotFoundError($"University with ID {request.UniversityId} not found.")) 
-            : Result.Ok(university.Adapt<UniversityResponse>());
+        return university is not null
+            ? Result.Ok(university.Adapt<UniversityResponse>())
+            : Result.Fail(new NotFoundError($"University with ID {request.UniversityId} not found."));
     }
 }
 

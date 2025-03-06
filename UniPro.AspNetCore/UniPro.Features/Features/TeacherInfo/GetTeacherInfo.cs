@@ -35,9 +35,9 @@ internal sealed class GetTeacherInfoQueryHandler(
             .Include(x => x.Department)
             .FirstOrDefaultAsync(x => x.TeacherId == request.TeacherId, cancellationToken);
 
-        return teacherInfo is null 
-            ? Result.Fail(new NotFoundError($"Teacher with ID {request.TeacherId} not found.")) 
-            : Result.Ok(teacherInfo.Adapt<TeacherInfoResponse>());
+        return teacherInfo is not null 
+            ? Result.Ok(teacherInfo.Adapt<TeacherInfoResponse>())
+            : Result.Fail(new NotFoundError($"Teacher with ID {request.TeacherId} not found."));
     }
 }
 

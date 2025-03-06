@@ -47,7 +47,7 @@ internal sealed class UpdateAcademicCommandHandler(
         
         var result = await dbContext.SaveChangesAsync(cancellationToken);
         
-        return result == 0
+        return result > 0
             ? Result.Ok()
             : Result.Fail(new InternalServerError());
     }
@@ -71,7 +71,7 @@ public sealed class UpdateAcademicEndpoint : ICarterModule
     private static async Task<IResult> Handler(
         [FromRoute] int academicId,
         [FromBody] UpdateAcademicRequest request,
-        [FromServices] HttpContext ctx,
+        [FromServices] IHttpContextAccessor ctx,
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {

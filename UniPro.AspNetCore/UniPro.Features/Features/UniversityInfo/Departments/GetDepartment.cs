@@ -32,9 +32,9 @@ internal sealed class GetDepartmentQueryHandler(
             .Include(x => x.StudentGroups)
             .FirstOrDefaultAsync(x => x.DepartmentId == request.DepartmentId, cancellationToken);
 
-        return department is null 
-            ? Result.Fail(new NotFoundError($"Department with ID {request.DepartmentId} not found.")) 
-            : Result.Ok(department.Adapt<DepartmentResponse>());
+        return department is not null
+            ? Result.Ok(department.Adapt<DepartmentResponse>())
+            : Result.Fail(new NotFoundError($"Department with ID {request.DepartmentId} not found."));
     }
 }
 
@@ -51,7 +51,7 @@ public sealed class GetDepartmentEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromRoute] int departmentId,
-        [FromServices] HttpContext ctx,
+        [FromServices] IHttpContextAccessor ctx,
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {

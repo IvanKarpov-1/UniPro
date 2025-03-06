@@ -36,7 +36,7 @@ internal sealed class DeleteStudentGroupCommandHandler(
         
         var result = await dbContext.SaveChangesAsync(cancellationToken);
         
-        return result == 0
+        return result > 0
             ? Result.Ok()
             : Result.Fail(new InternalServerError());
     }
@@ -59,7 +59,7 @@ public sealed class DeleteStudentGroupEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromRoute] int studentGroupId,
-        [FromServices] HttpContext ctx,
+        [FromServices] IHttpContextAccessor ctx,
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {

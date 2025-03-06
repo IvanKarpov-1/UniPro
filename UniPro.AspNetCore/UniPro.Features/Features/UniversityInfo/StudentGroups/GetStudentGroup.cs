@@ -33,9 +33,9 @@ internal sealed class GetStudentGroupQueryHandler(
             .ThenInclude(x => x.Student)
             .FirstOrDefaultAsync(x => x.StudentGroupId == request.StudentGroupId, cancellationToken);
 
-        return studentGroup is null 
-            ? Result.Fail(new NotFoundError($"Student group with ID {request.StudentGroupId} not found.")) 
-            : Result.Ok(studentGroup.Adapt<StudentGroupResponse>());
+        return studentGroup is not null
+            ? Result.Ok(studentGroup.Adapt<StudentGroupResponse>())
+            : Result.Fail(new NotFoundError($"Student group with ID {request.StudentGroupId} not found."));
     }
 }
 
@@ -53,7 +53,7 @@ public sealed class GetStudentGroupEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromRoute] int studentGroupId,
-        [FromServices] HttpContext ctx,
+        [FromServices] IHttpContextAccessor ctx,
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {

@@ -59,7 +59,7 @@ internal sealed class AddAcademicCommandHandler(
         
         var result = await dbContext.SaveChangesAsync(cancellationToken);
         
-        return result == 0
+        return result > 0
             ? Result.Ok(newAcademic.Adapt<AcademicResponse>())
             : Result.Fail(new InternalServerError());
     }
@@ -69,7 +69,7 @@ public sealed class AddAcademicEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost<AcademicResponse>("/api/academics", Handler)
+        app.MapPost("/api/academics", Handler)
             .RequireAuthorization()
             .Produces<AcademicResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
@@ -80,15 +80,18 @@ public sealed class AddAcademicEndpoint : ICarterModule
 
     private static async Task<IResult> Handler(
         [FromBody] AddAcademicRequest request,
-        [FromServices] HttpContext ctx,
+        [FromServices] IHttpContextAccessor ctx,
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         var command = request.Adapt<AddAcademicCommand>();
         var result = await sender.Send(command, cancellationToken);
 
-        return result.IsSuccess ? 
-            Results.CreatedAtRoute("GetAcademic", new { AcademicId = result.Value.AcademicId }) : 
-            result.Errors.ToProblem();
+        return result.IsSuccess
+            ? Results.CreatedAtRoute(
+                "GetAcademic",
+                new { AcademicId = result.Value.AcademicId },
+                result.Value) 
+            : result.Errors.ToProblem();
     }
 }
