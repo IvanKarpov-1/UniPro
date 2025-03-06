@@ -3,7 +3,6 @@ import Session from "supertokens-node/recipe/session";
 import Dashboard from "supertokens-node/recipe/dashboard";
 import UserRoles from "supertokens-node/recipe/userroles";
 import { TypeInput } from "supertokens-node/types";
-import customSignUp from "./hooks";
 
 export function getApiDomain() {
   const apiPort = process.env.APP_API_PORT || 3001;
@@ -18,7 +17,7 @@ export function getWebsiteDomain() {
 }
 
 export const SuperTokensConfig: TypeInput = {
-  supertokens: {    
+  supertokens: {
     // this is the location of the SuperTokens core.
     connectionURI: process.env.SUPERTOKENS_CORE ?? "http://localhost:3567",
     apiKey: process.env.SUPERTOKENS_API_KEY,
@@ -37,14 +36,20 @@ export const SuperTokensConfig: TypeInput = {
         functions: originalImplementation => {
           return {
             ...originalImplementation,
-            signUp: input => customSignUp(originalImplementation, input)
+            signUp: _ => {
+              throw {
+                statusCode: 403,
+                message: "User registration is restricted to administrators.",
+              };
+            }
           }
         }
       }
-    }), 
+    }),
     Session.init({
       useDynamicAccessTokenSigningKey: false,
-    }), 
+    }),
     Dashboard.init(),
-    UserRoles.init(),],
+    UserRoles.init(),
+  ],
 };

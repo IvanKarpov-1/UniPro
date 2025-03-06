@@ -7,6 +7,7 @@ import supertokens from "supertokens-node";
 import { verifySession } from "supertokens-node/recipe/session/framework/express";
 import { middleware, errorHandler, SessionRequest } from "supertokens-node/framework/express";
 import { getWebsiteDomain, SuperTokensConfig } from "./config";
+import adminRoute from "./routes/admin.route";
 
 supertokens.init(SuperTokensConfig);
 
@@ -40,13 +41,15 @@ app.get("/api/node/sessioninfo", verifySession(), async (req: SessionRequest, re
   });
 });
 
-app.post("/api/node/test", (req, res) => {
+app.post("/api/auth/test", (req, res) => {
   console.log(req);
   res.send(req.body);
 })
+
+app.use('/api/auth', verifySession(), adminRoute);
 
 // In case of session related errors, this error handler
 // returns 401 to the client.
 app.use(errorHandler());
 
-app.listen(process.env.APP_API_PORT, () => console.log(`API Server listening on port `, process.env.APP_API_PORT));
+app.listen(process.env.APP_API_PORT, () => console.log(`API Server listening on port ${process.env.APP_API_PORT}`));
