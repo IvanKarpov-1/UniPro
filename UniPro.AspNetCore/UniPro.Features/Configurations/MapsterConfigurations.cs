@@ -24,13 +24,5 @@ public static class MapsterConfigurations
             .ForType()
             .Map(dest => dest.StudentGroupName, src => src.Name)
             .Map(dest => dest.Students, src => src.StudentInfos);
-
-        TypeAdapterConfig<StudentInfo, StudentInfoResponse>
-            .ForType()
-            .Map(dest => dest.FirstName, src => src.Student.FirstName)
-            .Map(dest => dest.LastName, src => src.Student.LastName)
-            .Map(dest => dest.Patronymic, src => src.Student.Patronymic)
-            .Map(dest => dest.Avatar, src => src.Student.Avatar)
-            .Map(dest => dest.PhoneNumber, src => src.Student.PhoneNumber);
     }
 }
