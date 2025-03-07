@@ -57,7 +57,31 @@ services:
           --header "rid: dashboard" \
           --header "api-key: aZNk6R3yv9525DiT9AmJQszYfj6ctiFb" \
           --header "Content-Type: application/json" \
-          --data-raw "{\"email\": \"admin@admin.com\", \"password\": \"adminPswd123!!!\"}";
+          --data-raw "{
+            \"email\": \"admin@admin.com\",
+            \"password\": \"adminPswd123!!!\"
+          }";
+        curl --location --request PUT "http://unipro.supertokens-core:3567/recipe/role" \
+          --header "rid: userroles" \
+          --header "api-key: aZNk6R3yv9525DiT9AmJQszYfj6ctiFb" \
+          --header "Content-Type: application/json; charset=utf-8" \
+          --data-raw "{
+            \"role\": \"admin\"
+          }";
+        curl --location --request PUT "http://unipro.supertokens-core:3567/recipe/role" \
+          --header "rid: userroles" \
+          --header "api-key: aZNk6R3yv9525DiT9AmJQszYfj6ctiFb" \
+          --header "Content-Type: application/json; charset=utf-8" \
+          --data-raw "{
+            \"role\": \"teacher\"
+          }";
+        curl --location --request PUT "http://unipro.supertokens-core:3567/recipe/role" \
+          --header "rid: userroles" \
+          --header "api-key: aZNk6R3yv9525DiT9AmJQszYfj6ctiFb" \
+          --header "Content-Type: application/json; charset=utf-8" \
+          --data-raw "{
+            \"role\": \"student\"
+          }";
         echo "SuperTokens setup complete!";
       '
 
