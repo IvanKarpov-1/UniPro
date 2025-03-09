@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -39,12 +40,20 @@ public static class DependencyInjection
                     NameClaimType = ClaimTypes.NameIdentifier,
                     ValidateLifetime = true
                 };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = OnTokenValidated
+                };
             });
-        
+
         services.AddAuthorizationBuilder()
             .SetDefaultPolicy(new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
-                .Build());
+                .Build())
+            .AddPolicy("AdminPolicy", policy => policy.RequireClaim(ClaimTypes.Role, "admin"))
+            .AddPolicy("TeacherPolicy", policy => policy.RequireClaim(ClaimTypes.Role, "teacher"))
+            .AddPolicy("StudentPolicy", policy => policy.RequireClaim(ClaimTypes.Role, "student"));
 
         return services;
     }
@@ -68,5 +77,25 @@ public static class DependencyInjection
         
         rsa.ImportFromPem(pem.ToCharArray());
         return rsa;
+    }
+
+    private static Task OnTokenValidated(TokenValidatedContext context)
+    {
+        if (context.Principal?.Identity is not ClaimsIdentity claimsIdentity) return Task.CompletedTask;
+
+        var roleClaim = claimsIdentity.FindFirst("st-role");
+
+        if (roleClaim is null) return Task.CompletedTask;
+
+        var json = JsonDocument.Parse(roleClaim.Value);
+
+        if (!json.RootElement.TryGetProperty("v", out var rolesArray)) return Task.CompletedTask;
+
+        foreach (var role in rolesArray.EnumerateArray())
+        {
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
+        }
+
+        return Task.CompletedTask;
     }
 }
