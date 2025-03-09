@@ -1,6 +1,7 @@
 using Mapster;
 using UniPro.Domain.Entities;
 using UniPro.Features.Common.Responses;
+using UniPro.Features.Features.Users;
 
 namespace UniPro.Features.Configurations;
 
@@ -24,5 +25,9 @@ public static class MapsterConfigurations
             .ForType()
             .Map(dest => dest.StudentGroupName, src => src.Name)
             .Map(dest => dest.Students, src => src.StudentInfos);
+
+        TypeAdapterConfig<User, UserResponse>
+            .ForType()
+            .MapToConstructor(true);
     }
 }
