@@ -47,7 +47,7 @@ internal sealed class GetUserQueryHandler(
 
         if (user is null)
         {
-            Result.Fail(new NotFoundError($"User with ID {request.UserId} not found."));
+            return Result.Fail(new NotFoundError($"User with ID {request.UserId} not found."));
         }
 
         var userResponse = user.Adapt<UserResponse>();
