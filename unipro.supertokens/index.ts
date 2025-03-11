@@ -46,7 +46,7 @@ app.post("/api/auth/test", (req, res) => {
   res.send(req.body);
 })
 
-app.use('/api/auth', verifySession(), adminRoute);
+app.use('/api/auth', adminRoute);
 
 // In case of session related errors, this error handler
 // returns 401 to the client.

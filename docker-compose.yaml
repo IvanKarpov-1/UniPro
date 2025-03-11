@@ -94,9 +94,9 @@ services:
     environment:
       NODE_ENV: production
       APP_API_PORT: 3001
-      APP_API_URL: http://unipro.supertokens-node
+      APP_API_URL: http://localhost:5173
       APP_WEBSITE_PORT: 80
-      APP_WEBSITE_URL: http://unipro.nginx-reverse-proxy
+      APP_WEBSITE_URL: http://localhost:5173
       SUPERTOKENS_CORE: http://unipro.supertokens-core:3567
       SUPERTOKENS_API_KEY: aZNk6R3yv9525DiT9AmJQszYfj6ctiFb
       POSTGRES_CONNECTION_STRING: postgresql://admin:adminPswd123!!!@unipro.postgres:5432/UniPro
