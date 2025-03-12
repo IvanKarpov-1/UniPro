@@ -30,6 +30,8 @@ if (app.Environment.IsDevelopment())
     await uniProDbContext.Database.MigrateAsync();
 }
 
+app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
