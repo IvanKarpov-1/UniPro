@@ -1,6 +1,7 @@
 
 <script lang="ts">
 import * as Session from "supertokens-web-js/recipe/session";
+
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -22,6 +23,25 @@ export default defineComponent({
       alert(this.session);
       if (this.session) {
         this.userId = await Session.getUserId();
+        this.payload = await Session.getAccessTokenPayloadSecurely();
+        this.token = await Session.getAccessToken();
+        try {
+          const response = await fetch(`http://localhost/api/users/${this.userId}`,
+            {
+              method: "GET",
+              headers: {
+                "Authorization": `Bearer ${this.token}`,
+                "Content-Type": "application/json",
+              }
+          );
+          if (response.ok) {
+              this.userData = await response.json();
+          } else {
+            console.error("Error getting user data:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error requesting user data:", error);
+        }
       }
     },
     async onLogout() {
@@ -33,14 +53,18 @@ export default defineComponent({
 </script>
 
 <template>
-  <main>
+<main>
     <div class="body">
       <h1>Hello</h1>
-
       <div v-if="session">
         <span>UserId:</span>
         <h3>{{ userId }}</h3>
-
+        <p>Payload: {{ payload }}</p>
+        <div v-if="userData">
+          <h3>User Data:</h3>
+          <!-- Выводим полученные данные пользователя -->
+          <pre>{{ userData }}</pre>
+        </div>
         <button @click="onLogout">Sign Out</button>
       </div>
       <div v-else>

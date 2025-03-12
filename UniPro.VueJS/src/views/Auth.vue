@@ -13,11 +13,11 @@ export default defineComponent({
                     appInfo: {
                         appName: "UniPro",
                         apiDomain: "http://localhost",
-                        websiteDomain: "http://localhost:5173",
+                        websiteDomain: "http://localhost:5173", // container port 8080 
                         apiBasePath: "/api/auth",
                         websiteBasePath: "/auth"
                     },
-                    recipeList: [
+                    recipeList: [ 
                         (window as any).supertokensUIEmailPassword.init(
                         //     {
                         //     onHandleEvent: (event: any) =>{

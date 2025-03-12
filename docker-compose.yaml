@@ -94,7 +94,7 @@ services:
     environment:
       NODE_ENV: production
       APP_API_PORT: 3001
-      APP_API_URL: http://localhost:5173
+      APP_API_URL: http://localhost:5173 
       APP_WEBSITE_PORT: 80
       APP_WEBSITE_URL: http://localhost:5173
       SUPERTOKENS_CORE: http://unipro.supertokens-core:3567
@@ -140,6 +140,19 @@ services:
     volumes:
       - ./UniPro.ReverseProxy/nginx.conf:/etc/nginx/nginx.conf
     restart: unless-stopped
+
+  # unipro.vuejs:
+  #   build:
+  #     context: ./UniPro.VueJS
+  #     dockerfile: Dockerfile
+  #   container_name: unipro.vuejs
+  #   depends_on:
+  #     - unipro.nginx-reverse-proxy
+  #   ports:
+  #     - "8080:80"
+  #   networks:
+  #     - unipro_network
+  #   restart: unless-stopped
 
 networks:
   unipro_network:
