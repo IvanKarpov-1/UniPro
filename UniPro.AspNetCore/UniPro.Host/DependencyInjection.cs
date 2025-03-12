@@ -43,7 +43,8 @@ public static class DependencyInjection
 
                 options.Events = new JwtBearerEvents
                 {
-                    OnTokenValidated = OnTokenValidated
+                    OnTokenValidated = OnTokenValidated,
+                    OnMessageReceived = OnMessageReceived,
                 };
             });
 
@@ -94,6 +95,16 @@ public static class DependencyInjection
         foreach (var role in rolesArray.EnumerateArray())
         {
             claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private static Task OnMessageReceived(MessageReceivedContext context)
+    {
+        if (context.Request.Cookies.ContainsKey("sAccessToken"))
+        {
+            context.Token = context.Request.Cookies["sAccessToken"];
         }
 
         return Task.CompletedTask;
