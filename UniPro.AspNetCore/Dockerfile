@@ -4,19 +4,19 @@ WORKDIR /app
 
 # Copy the solution files
 COPY --link UniPro.sln ./
-COPY --link UniPro.Domain/*.csproj UniPro.Domain/
-COPY --link UniPro.Features/*.csproj UniPro.Features/
-COPY --link UniPro.Host/*.csproj UniPro.Host/
-COPY --link UniPro.Infrastructure/*.csproj UniPro.Infrastructure/
+COPY --link src/UniPro.Domain/*.csproj UniPro.Domain/
+COPY --link src/UniPro.Features/*.csproj UniPro.Features/
+COPY --link src/UniPro.Host/*.csproj UniPro.Host/
+COPY --link src/UniPro.Infrastructure/*.csproj UniPro.Infrastructure/
 
 # Restore dependencies
 RUN dotnet restore UniPro.Host/*.csproj
 
 # Copy everything else
-COPY --link UniPro.Domain/ UniPro.Domain/
-COPY --link UniPro.Features/ UniPro.Features/
-COPY --link UniPro.Host/ UniPro.Host/
-COPY --link UniPro.Infrastructure/ UniPro.Infrastructure/
+COPY --link src/UniPro.Domain/ UniPro.Domain/
+COPY --link src/UniPro.Features/ UniPro.Features/
+COPY --link src/UniPro.Host/ UniPro.Host/
+COPY --link src/UniPro.Infrastructure/ UniPro.Infrastructure/
 
 # Builds and publishes UniPro
 FROM build AS publish
