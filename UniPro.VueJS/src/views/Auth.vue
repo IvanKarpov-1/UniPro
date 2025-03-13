@@ -19,6 +19,7 @@ export default defineComponent({
                     },
                     recipeList: [ 
                         (window as any).supertokensUIEmailPassword.init(
+                        // ===== TO CHANGE REDIRECT =====
                         //     {
                         //     onHandleEvent: (event: any) =>{
                         //         if (event.action === "SUCCESS") {

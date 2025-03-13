@@ -3,7 +3,6 @@ import HomeView from "./views/Home.vue";
 import AuthView from "./views/Auth.vue";
 import ProfileView from "./views/Profile.vue";
 import Session from "supertokens-web-js/recipe/session";
-import { doesSessionExist } from "supertokens-web-js"; // функция проверки сессии
 
 const routes = [
   {
@@ -12,17 +11,12 @@ const routes = [
     component: AuthView,
   },
   {
-    path: "/profile",
-    name: "profile",
-    component: ProfileView,
-    meta: { requiresAuth: true }, 
-  },
-  {
     path: "/",
     name: "home",
     component: HomeView,
     meta: { requiresAuth: true }
   },
+
 ];
 
 const router = createRouter({

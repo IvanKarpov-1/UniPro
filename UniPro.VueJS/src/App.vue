@@ -1,27 +1,11 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+
 </script>
 
 <template>
   <div id="app"> 
-    <!-- <nav>
-    <router-link to="/">Главная</router-link>
-    <router-link to="/about">О нас</router-link>
-    </nav> -->
     <router-view />
   </div>
-<!-- <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main> -->
 </template>
 
 <style scoped>

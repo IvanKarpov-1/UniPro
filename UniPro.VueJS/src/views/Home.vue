@@ -1,7 +1,7 @@
 
 <script lang="ts">
 import * as Session from "supertokens-web-js/recipe/session";
-
+import { getUserInfo } from "../authService";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -9,40 +9,21 @@ export default defineComponent({
     return {
       session: false,
       userId: "",
+      payload: null,
+      userData: null,
+      token: "",
     };
   },
   mounted() {
-    this.getUserInfo();
+    getUserInfo().then((data) => {
+      this.session = data.session;
+      this.userId = data.userId;
+      this.userData = data.userData;
+    });
   },
   methods: {
     redirectToLogin() {
       window.location.href = "/auth";
-    },
-    async getUserInfo() {
-      this.session = await Session.doesSessionExist();
-      alert(this.session);
-      if (this.session) {
-        this.userId = await Session.getUserId();
-        this.payload = await Session.getAccessTokenPayloadSecurely();
-        this.token = await Session.getAccessToken();
-        try {
-          const response = await fetch(`http://localhost/api/users/${this.userId}`,
-            {
-              method: "GET",
-              headers: {
-                "Authorization": `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-              }
-          );
-          if (response.ok) {
-              this.userData = await response.json();
-          } else {
-            console.error("Error getting user data:", response.statusText);
-          }
-        } catch (error) {
-          console.error("Error requesting user data:", error);
-        }
-      }
     },
     async onLogout() {
       await Session.signOut();
@@ -53,7 +34,7 @@ export default defineComponent({
 </script>
 
 <template>
-<main>
+  <main>
     <div class="body">
       <h1>Hello</h1>
       <div v-if="session">
