@@ -33,11 +33,11 @@ public sealed record UserResponse(
     public string? StudentGroupName { get; set; }
 }
 
-internal sealed record GetUserQuery(
+public sealed record GetUserQuery(
     string UserId)
     : IRequest<Result<UserResponse>>;
 
-internal sealed class GetUserQueryHandler(
+public sealed class GetUserQueryHandler(
     UniProDbContext dbContext)
     : IRequestHandler<GetUserQuery, Result<UserResponse>>
 {

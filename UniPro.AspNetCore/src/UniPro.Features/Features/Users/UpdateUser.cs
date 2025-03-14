@@ -17,7 +17,7 @@ public sealed record UpdateUserRequest(
     string? Avatar,
     string? PhoneNumber);
 
-internal record UpdateUserCommand(
+public record UpdateUserCommand(
     string? Avatar,
     string? PhoneNumber)
     : IRequest<Result<Unit>>
@@ -25,7 +25,7 @@ internal record UpdateUserCommand(
     public string? UserId { get; set; }
 }
 
-internal class UpdateUserCommandHandler(
+public class UpdateUserCommandHandler(
     UniProDbContext dbContext)
     : IRequestHandler<UpdateUserCommand, Result<Unit>>
 {
