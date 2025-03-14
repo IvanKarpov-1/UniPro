@@ -40,7 +40,7 @@ public class GetUserQueryHandlerTests
             .RuleFor(u => u.Patronymic, f => f.Name.FullName())
             .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber())
             .Generate();
-        _dbContext.Set<User>().Add(dbUser);
+        _dbContext.Users.Add(dbUser);
         await _dbContext.SaveChangesAsync();
 
         var userId = _autoFaker.Generate<Guid>().ToString();
@@ -69,7 +69,7 @@ public class GetUserQueryHandlerTests
             .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber())
             .RuleFor(u => u.Avatar, f => f.Internet.Avatar())
             .Generate();
-        _dbContext.Set<User>().Add(dbUser);
+        _dbContext.Users.Add(dbUser);
         await _dbContext.SaveChangesAsync();
 
         var userResponse = new UserResponse
@@ -111,7 +111,7 @@ public class GetUserQueryHandlerTests
             .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber())
             .RuleFor(u => u.Avatar, f => f.Internet.Avatar())
             .Generate();
-        _dbContext.Set<User>().Add(dbUser);
+        _dbContext.Users.Add(dbUser);
 
         var userRole = new StUserRole
         {
@@ -121,7 +121,7 @@ public class GetUserQueryHandlerTests
             TenantId = ""
         };
 
-        _dbContext.Set<StUserRole>().Add(userRole);
+        _dbContext.StUserRoles.Add(userRole);
 
         var university = new Faker<University>()
             .RuleFor(u => u.UniversityId, _autoFaker.Generate<int>())
@@ -161,8 +161,8 @@ public class GetUserQueryHandlerTests
             .RuleFor(t => t.StudentGroup, studentGroup)
             .Generate();
 
-        _dbContext.Set<TeacherInfo>().Add(teacherInfo);
-        _dbContext.Set<StudentInfo>().Add(studentInfo);
+        _dbContext.TeacherInfos.Add(teacherInfo);
+        _dbContext.StudentInfos.Add(studentInfo);
 
         await _dbContext.SaveChangesAsync();
 

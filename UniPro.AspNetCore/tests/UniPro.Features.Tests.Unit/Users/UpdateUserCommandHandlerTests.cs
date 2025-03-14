@@ -43,7 +43,7 @@ public class UpdateUserCommandHandlerTests
             .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber())
             .RuleFor(u => u.Avatar, f => f.Internet.Avatar())
             .Generate();
-        _dbContext.Set<User>().Add(dbUser);
+        _dbContext.Users.Add(dbUser);
         await _dbContext.SaveChangesAsync();
         
         var command = new UpdateUserCommand(null, null)
@@ -77,7 +77,7 @@ public class UpdateUserCommandHandlerTests
             .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber())
             .RuleFor(u => u.Avatar, f => f.Internet.Avatar())
             .Generate();
-        _dbContext.Set<User>().Add(dbUser);
+        _dbContext.Users.Add(dbUser);
         await _dbContext.SaveChangesAsync();
         _dbContext.ChangeTracker.Clear();
         
