@@ -9,29 +9,11 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using UniPro.Features.Common;
 using UniPro.Features.Common.Errors;
+using UniPro.Features.Common.Responses;
 using UniPro.Features.Extensions;
 using UniPro.Infrastructure.Database;
 
 namespace UniPro.Features.Features.Users;
-
-public sealed record UserResponse(
-    string UserId,
-    string FirstName,
-    string LastName,
-    string Patronymic,
-    string Avatar,
-    string PhoneNumber)
-{
-    public string? UserRole { get; set; }
-    
-    public string? UniversityName { get; set; }
-
-    public string? AcademicName { get; set; }
-    
-    public string? DepartmentName { get; set; }
-    
-    public string? StudentGroupName { get; set; }
-}
 
 internal sealed record GetUserQuery(
     string UserId)
