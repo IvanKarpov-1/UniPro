@@ -38,6 +38,11 @@ internal class UpdateUserCommandHandler(
             return Result.Fail(new NotFoundError($"User with ID {request.UserId} not found."));
         }
 
+        if (request.Avatar is null && request.PhoneNumber is null)
+        {
+            return Result.Fail(new BadRequestError("Please provide a valid avatar or phone number."));
+        }
+
         if (request.Avatar is not null)
         {
             user.Avatar = request.Avatar;
@@ -63,6 +68,7 @@ public sealed class UpdateUserEndpoint : ICarterModule
         app.MapPut("/api/users/{userId}", Handler)
             .RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status403Forbidden)
             .ProducesProblem(StatusCodes.Status404NotFound)

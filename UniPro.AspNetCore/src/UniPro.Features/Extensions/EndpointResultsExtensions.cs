@@ -53,6 +53,7 @@ public static class EndpointResultsExtensions
     {
         return error switch
         {
+            BadRequestError => StatusCodes.Status400BadRequest,
             NotFoundError => StatusCodes.Status404NotFound,
             AlreadyExistError => StatusCodes.Status409Conflict,
             InternalServerError => StatusCodes.Status500InternalServerError,
