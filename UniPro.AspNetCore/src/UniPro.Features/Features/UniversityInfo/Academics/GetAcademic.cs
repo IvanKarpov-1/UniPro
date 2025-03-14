@@ -15,11 +15,11 @@ using UniPro.Infrastructure.Database;
 
 namespace UniPro.Features.Features.UniversityInfo.Academics;
 
-internal sealed record GetAcademicQuery(
+public sealed record GetAcademicQuery(
     int AcademicId)
     : IRequest<Result<AcademicResponse>>;
 
-internal sealed class GetAcademicQueryHandler(
+public sealed class GetAcademicQueryHandler(
     UniProDbContext dbContext)
     : IRequestHandler<GetAcademicQuery, Result<AcademicResponse>>
 {

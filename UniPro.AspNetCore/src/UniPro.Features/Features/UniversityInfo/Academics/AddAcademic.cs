@@ -21,12 +21,12 @@ public sealed record AddAcademicRequest(
     int UniversityId,
     string AcademicName);
 
-internal sealed record AddAcademicCommand(
+public sealed record AddAcademicCommand(
     int UniversityId,
     string AcademicName)
     : IRequest<Result<AcademicResponse>>;
 
-internal sealed class AddAcademicCommandHandler(
+public sealed class AddAcademicCommandHandler(
     UniProDbContext dbContext) 
     : IRequestHandler<AddAcademicCommand, Result<AcademicResponse>>
 {
