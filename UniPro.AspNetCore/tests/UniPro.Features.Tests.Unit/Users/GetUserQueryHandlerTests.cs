@@ -91,7 +91,7 @@ public class GetUserQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().Be(userResponse);
+        result.Value.Should().BeEquivalentTo(userResponse);
     }
 
     [Theory]
@@ -196,6 +196,6 @@ public class GetUserQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().Be(userResponse);
+        result.Value.Should().BeEquivalentTo(userResponse);
     }
 }
