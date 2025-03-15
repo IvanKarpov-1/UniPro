@@ -15,11 +15,11 @@ using UniPro.Infrastructure.Database;
 
 namespace UniPro.Features.Features.UniversityInfo.StudentGroups;
 
-internal sealed record GetStudentGroupQuery(
+public sealed record GetStudentGroupQuery(
     int StudentGroupId)
     : IRequest<Result<StudentGroupResponse>>;
 
-internal sealed class GetStudentGroupQueryHandler(
+public sealed class GetStudentGroupQueryHandler(
     UniProDbContext dbContext)
     : IRequestHandler<GetStudentGroupQuery, Result<StudentGroupResponse>>
 {

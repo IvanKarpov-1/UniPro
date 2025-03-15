@@ -21,12 +21,12 @@ public sealed record AddStudentGroupRequest(
     int DepartmentId,
     string StudentGroupName);
 
-internal sealed record AddStudentGroupCommand(
+public sealed record AddStudentGroupCommand(
     int DepartmentId,
     string StudentGroupName)
     : IRequest<Result<StudentGroupResponse>>;
 
-internal sealed class AddStudentGroupCommandHandler(
+public sealed class AddStudentGroupCommandHandler(
     UniProDbContext dbContext) 
     : IRequestHandler<AddStudentGroupCommand, Result<StudentGroupResponse>>
 {

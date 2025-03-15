@@ -13,11 +13,11 @@ using UniPro.Infrastructure.Database;
 
 namespace UniPro.Features.Features.UniversityInfo.StudentGroups;
 
-internal sealed record DeleteStudentGroupCommand(
+public sealed record DeleteStudentGroupCommand(
     int StudentGroupId)
     : IRequest<Result<Unit>>;
 
-internal sealed class DeleteStudentGroupCommandHandler(
+public sealed class DeleteStudentGroupCommandHandler(
     UniProDbContext dbContext)
     : IRequestHandler<DeleteStudentGroupCommand, Result<Unit>>
 {

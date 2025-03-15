@@ -17,13 +17,13 @@ public sealed record UpdateStudentGroupRequest(
     string NewStudentGroupName,
     int? NewDepartmentId);
 
-internal sealed record UpdateStudentGroupCommand(
+public sealed record UpdateStudentGroupCommand(
     int StudentGroupId,
     string NewStudentGroupName,
     int? NewDepartmentId)
     : IRequest<Result<Unit>>;
 
-internal sealed class UpdateStudentGroupCommandHandler(
+public sealed class UpdateStudentGroupCommandHandler(
     UniProDbContext dbContext)
     : IRequestHandler<UpdateStudentGroupCommand, Result<Unit>>
 {
