@@ -15,11 +15,11 @@ using UniPro.Infrastructure.Database;
 
 namespace UniPro.Features.Features.UniversityInfo.Departments;
 
-internal sealed record GetDepartmentQuery(
+public sealed record GetDepartmentQuery(
     int DepartmentId)
     : IRequest<Result<DepartmentResponse>>;
 
-internal sealed class GetDepartmentQueryHandler(
+public sealed class GetDepartmentQueryHandler(
     UniProDbContext dbContext)
     : IRequestHandler<GetDepartmentQuery, Result<DepartmentResponse>>
 {

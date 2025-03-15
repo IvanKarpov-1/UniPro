@@ -21,12 +21,12 @@ public sealed record AddDepartmentRequest(
     int AcademicId,
     string DepartmentName);
 
-internal sealed record AddDepartmentCommand(
+public sealed record AddDepartmentCommand(
     int AcademicId,
     string DepartmentName)
     : IRequest<Result<DepartmentResponse>>;
 
-internal sealed class AddDepartmentCommandHandler(
+public sealed class AddDepartmentCommandHandler(
     UniProDbContext dbContext) 
     : IRequestHandler<AddDepartmentCommand, Result<DepartmentResponse>>
 {

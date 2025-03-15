@@ -13,11 +13,11 @@ using UniPro.Infrastructure.Database;
 
 namespace UniPro.Features.Features.UniversityInfo.Departments;
 
-internal sealed record DeleteDepartmentCommand(
+public sealed record DeleteDepartmentCommand(
     int DepartmentId)
     : IRequest<Result<Unit>>;
 
-internal sealed class DeleteDepartmentCommandHandler(
+public sealed class DeleteDepartmentCommandHandler(
     UniProDbContext dbContext)
     : IRequestHandler<DeleteDepartmentCommand, Result<Unit>>
 {
