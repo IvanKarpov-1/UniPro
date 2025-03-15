@@ -16,12 +16,12 @@ namespace UniPro.Features.Features.UniversityInfo.Universities;
 public sealed record UpdateUniversityRequest(
     string NewUniversityName);
 
-internal sealed record UpdateUniversityCommand(
+public sealed record UpdateUniversityCommand(
     int UniversityId,
     string NewUniversityName)
     : IRequest<Result<Unit>>;
 
-internal sealed class UpdateUniversityCommandHandler(
+public sealed class UpdateUniversityCommandHandler(
     UniProDbContext dbContext)
     : IRequestHandler<UpdateUniversityCommand, Result<Unit>>
 {

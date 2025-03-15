@@ -20,11 +20,11 @@ namespace UniPro.Features.Features.UniversityInfo.Universities;
 public sealed record AddUniversityRequest(
     string UniversityName);
 
-internal sealed record AddUniversityCommand(
+public sealed record AddUniversityCommand(
     string UniversityName)
     : IRequest<Result<UniversityResponse>>;
 
-internal sealed class AddUniversityCommandHandler(
+public sealed class AddUniversityCommandHandler(
     UniProDbContext dbContext) 
     : IRequestHandler<AddUniversityCommand, Result<UniversityResponse>>
 {
