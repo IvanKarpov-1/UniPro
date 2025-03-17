@@ -141,6 +141,19 @@ services:
       - ./UniPro.ReverseProxy/nginx.conf:/etc/nginx/nginx.conf
     restart: unless-stopped
 
+  # unipro.vuejs:
+  #   build:
+  #     context: ./UniPro.VueJS
+  #     dockerfile: Dockerfile
+  #   container_name: unipro.vuejs
+  #   depends_on:
+  #     - unipro.nginx-reverse-proxy
+  #   ports:
+  #     - "8080:80"
+  #   networks:
+  #     - unipro_network
+  #   restart: unless-stopped
+
 networks:
   unipro_network:
     driver: bridge
