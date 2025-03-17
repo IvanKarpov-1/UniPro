@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4B6534D8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPro.Features.Tests.Unit", "tests\UniPro.Features.Tests.Unit\UniPro.Features.Tests.Unit.csproj", "{D909D376-DEBC-4875-A14D-D54D362AF41C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPro.Features.Tests.Integration", "tests\UniPro.Features.Tests.Integration\UniPro.Features.Tests.Integration.csproj", "{E22F9931-BAF7-41F3-B8A2-D70702F289E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{D909D376-DEBC-4875-A14D-D54D362AF41C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D909D376-DEBC-4875-A14D-D54D362AF41C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D909D376-DEBC-4875-A14D-D54D362AF41C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E22F9931-BAF7-41F3-B8A2-D70702F289E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E22F9931-BAF7-41F3-B8A2-D70702F289E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E22F9931-BAF7-41F3-B8A2-D70702F289E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E22F9931-BAF7-41F3-B8A2-D70702F289E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{58936911-7B7C-4E22-960F-CDFCE2393113} = {8B970962-0A5E-4DEB-8917-C5FC1733B506}
@@ -47,5 +53,6 @@ Global
 		{7C6562F7-E691-43C5-820D-3B1F40BC84C5} = {8B970962-0A5E-4DEB-8917-C5FC1733B506}
 		{99726BC5-3C4F-4496-88AF-FED2CFB2F224} = {8B970962-0A5E-4DEB-8917-C5FC1733B506}
 		{D909D376-DEBC-4875-A14D-D54D362AF41C} = {4B6534D8-EDEB-4E6D-A022-143BA17DC787}
+		{E22F9931-BAF7-41F3-B8A2-D70702F289E9} = {4B6534D8-EDEB-4E6D-A022-143BA17DC787}
 	EndGlobalSection
 EndGlobal
