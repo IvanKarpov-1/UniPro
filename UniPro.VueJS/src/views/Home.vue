@@ -1,62 +1,39 @@
 
 <script lang="ts">
-import * as Session from "supertokens-web-js/recipe/session";
-import { getUserInfo } from "../authService";
 import { defineComponent } from "vue";
+import Header from '@/components/navbar/Header.vue';
+import MainInfo from '@/components/MainInfo.vue';
+import { getUserInfo } from "@/authService";
 
 export default defineComponent({
+  components: {
+    Header,
+    MainInfo
+  },
   data() {
     return {
       session: false,
       userId: "",
       payload: null,
-      userData: null,
+      userData: {},
       token: "",
     };
   },
   mounted() {
+
     getUserInfo().then((data) => {
       this.session = data.session;
       this.userId = data.userId;
       this.userData = data.userData;
     });
   },
-  methods: {
-    redirectToLogin() {
-      window.location.href = "/auth";
-    },
-    async onLogout() {
-      await Session.signOut();
-      window.location.reload();
-    },
-  },
 });
 </script>
 
 <template>
+  <Header />     
   <main>
-    <div class="body">
-      <h1>Hello</h1>
-      <div v-if="session">
-        <span>UserId:</span>
-        <h3>{{ userId }}</h3>
-        <p>Payload: {{ payload }}</p>
-        <div v-if="userData">
-          <h3>User Data:</h3>
-          <!-- Выводим полученные данные пользователя -->
-          <pre>{{ userData }}</pre>
-        </div>
-        <button @click="onLogout">Sign Out</button>
-      </div>
-      <div v-else>
-        <p>
-          Visit the
-          <a href="https://supertokens.com">SuperTokens tutorial</a> to learn
-          how to build Auth under a day.
-        </p>
-        <button @click="redirectToLogin">Sign in</button>
-      </div>
-    </div>
+    <MainInfo :userData="userData" />
   </main>
 </template>
 

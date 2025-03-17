@@ -4,6 +4,8 @@ import SuperTokens from "supertokens-web-js";
 import Session from "supertokens-web-js/recipe/session";
 import App from "./App.vue";
 import router from "./router";
+import './assets/main.css'
+
 
 SuperTokens.init({
     appInfo: {

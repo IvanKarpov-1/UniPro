@@ -2,7 +2,6 @@ import * as Session from "supertokens-web-js/recipe/session";
 
 export async function getUserInfo() {
   const session = await Session.doesSessionExist();
-  alert(session);
   if (session) {
     const userId = await Session.getUserId();
     let userData = null;
