@@ -27,4 +27,10 @@
       <PackageReference Include="Scalar.AspNetCore" Version="2.0.21" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="jwt_pub_key.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

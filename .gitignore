@@ -483,3 +483,5 @@ appsettings.Development.json
 unipro.supertokens/dist/
 
 secrets/
+
+UniPro.AspNetCore/src/UniPro.Host/jwt_pub_key.txt
