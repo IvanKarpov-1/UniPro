@@ -40,8 +40,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="super_tokens_tables.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <None Update="Setup\super_tokens_tables.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

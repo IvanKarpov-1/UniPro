@@ -9,6 +9,7 @@ using Npgsql;
 using Respawn;
 using Testcontainers.PostgreSql;
 using UniPro.Infrastructure.Database;
+using Task = System.Threading.Tasks.Task;
 
 namespace UniPro.Features.Tests.Integration.Setup;
 
@@ -16,6 +17,8 @@ public class UniProWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
 {
     public HttpClient HttpClient { get; private set; } = default!;
 
+    public UniProDbContext DbContext { get; private set; } = default!;
+    
     private readonly PostgreSqlContainer _dbContainer
         = new PostgreSqlBuilder()
             .WithImage(new PostgreSqlConfiguration().Image)
@@ -34,7 +37,7 @@ public class UniProWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
                 {
                     options.DefaultAuthenticateScheme = "TestScheme";
                     options.DefaultChallengeScheme = "TestScheme";
-                    options.DefaultScheme = "TestScheme"; // Ensure all auth operations use this
+                    options.DefaultScheme = "TestScheme";
                 })
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("TestScheme", options => { });
 
@@ -55,11 +58,19 @@ public class UniProWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
-        var script = await File.ReadAllTextAsync("super_tokens_tables.sql");
+        var script = await File.ReadAllTextAsync("Setup/super_tokens_tables.sql");
         await _dbContainer.ExecScriptAsync(script);
+        
         _dbConnection = new NpgsqlConnection(_dbContainer.GetConnectionString());
-        HttpClient = CreateClient();
         await InitializeRespawner();
+        
+        var optionsBuilder = new DbContextOptionsBuilder<UniProDbContext>()
+            .EnableSensitiveDataLogging()
+            .UseNpgsql(_dbContainer.GetConnectionString())
+            .UseSnakeCaseNamingConvention();
+        DbContext = new UniProDbContext(optionsBuilder.Options);
+        
+        HttpClient = CreateClient();
     }
 
     private async Task InitializeRespawner()

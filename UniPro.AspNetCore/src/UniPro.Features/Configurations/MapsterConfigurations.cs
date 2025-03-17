@@ -1,7 +1,6 @@
 using Mapster;
 using UniPro.Domain.Entities;
 using UniPro.Features.Common.Responses;
-using UniPro.Features.Features.Users;
 
 namespace UniPro.Features.Configurations;
 
