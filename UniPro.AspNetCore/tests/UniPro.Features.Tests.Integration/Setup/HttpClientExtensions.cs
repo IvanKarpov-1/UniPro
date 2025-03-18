@@ -13,4 +13,10 @@ public static class HttpClientExtensions
         client.DefaultRequestHeaders.Add("X-Test-Claims", claimsJson);
         return client;
     }
+    
+    public static HttpClient RemoveClaims(this HttpClient client)
+    {
+        client.DefaultRequestHeaders.Remove("X-Test-Claims");
+        return client;
+    }
 }

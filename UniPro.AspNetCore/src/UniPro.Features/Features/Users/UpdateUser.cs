@@ -108,7 +108,7 @@ public sealed class UpdateUserEndpoint : ICarterModule
         var result = await sender.Send(command, cancellationToken);
         
         return result.IsSuccess
-            ? Results.Ok(result.Value)
+            ? Results.NoContent()
             : result.Errors.ToProblem();
     }
 }
