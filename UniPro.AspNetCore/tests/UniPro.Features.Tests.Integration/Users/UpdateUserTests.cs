@@ -19,6 +19,7 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
         // Arrange
         var userId = _autoFaker.Generate<Guid>().ToString();
         var updateUserRequest = new UpdateUserRequest(null, null);
+        _client.OmitAuthentication();
         
         // Act
         var response = await _client.PutAsJsonAsync($"/api/users/{userId}", updateUserRequest);
@@ -34,7 +35,6 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
         var userId = _autoFaker.Generate<Guid>().ToString();
         var userId2 = _autoFaker.Generate<Guid>().ToString();
         var updateUserRequest = new UpdateUserRequest(null, null);
-        _client.RemoveClaims();
         _client.AddClaims([new Claim(ClaimTypes.NameIdentifier, userId2)]);
         
         // Act
@@ -50,7 +50,6 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
         // Arrange
         await _dbContext.PopulateUsers(1);
         var userId = _autoFaker.Generate<Guid>().ToString();
-        _client.RemoveClaims();
         _client.AddClaims([new Claim(ClaimTypes.NameIdentifier, userId)]);
 
         var updateUserRequest = new UpdateUserRequest(null, null);
@@ -68,7 +67,6 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
         // Arrange
         var dbUser = (await _dbContext.PopulateUsers(1))[0];
         var userId = dbUser.UserId;
-        _client.RemoveClaims();
         _client.AddClaims([new Claim(ClaimTypes.NameIdentifier, userId)]);
 
         var updateUserRequest = new UpdateUserRequest(null, null);
@@ -89,7 +87,6 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
         // Arrange
         var dbUser = (await _dbContext.PopulateUsers(1))[0];
         var userId = dbUser.UserId;
-        _client.RemoveClaims();
         _client.AddClaims([new Claim(ClaimTypes.NameIdentifier, userId)]);
 
         var updateUserRequest = new UpdateUserRequest(avatar, phoneNumber);
@@ -107,5 +104,9 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
 
     public Task InitializeAsync() => Task.CompletedTask;
 
-    public Task DisposeAsync() => _resetDatabase();
+    public Task DisposeAsync()  {
+        _resetDatabase();
+        _client.RemoveTestHeaders();
+        return Task.CompletedTask;
+    }
 }

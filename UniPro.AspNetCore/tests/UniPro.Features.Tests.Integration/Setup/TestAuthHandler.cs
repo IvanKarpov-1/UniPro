@@ -8,16 +8,23 @@ namespace UniPro.Features.Tests.Integration.Setup;
 
 public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    public TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+    public TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger,
+        UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
     {
     }
 
-    public TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder) : base(options, logger, encoder)
+    public TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger,
+        UrlEncoder encoder) : base(options, logger, encoder)
     {
     }
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
+        if (Request.Headers.ContainsKey("X-Omit-Authentication"))
+        {
+            return Task.FromResult(AuthenticateResult.Fail(""));
+        }
+
         var claims = new List<Claim>();
 
         if (Request.Headers.TryGetValue("X-Test-Claims", out var claimsJson))
@@ -28,11 +35,11 @@ public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions
                 claims.AddRange(claimsDict.Select(kvp => new Claim(kvp.Key, kvp.Value)));
             }
         }
-        
+
         var identity = new ClaimsIdentity(claims, "Bearer");
         var principal = new ClaimsPrincipal(identity);
         var ticket = new AuthenticationTicket(principal, "TestScheme");
-        
+
         return Task.FromResult(AuthenticateResult.Success(ticket));
     }
 }
