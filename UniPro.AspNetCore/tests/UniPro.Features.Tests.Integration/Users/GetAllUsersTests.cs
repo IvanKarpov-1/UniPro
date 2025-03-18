@@ -33,7 +33,7 @@ public class GetAllUsersTests(UniProWebApplicationFactory factory) : IAsyncLifet
         // Arrange
         const int usersCount = 2;
 
-        var dbUsers = await _dbContext.PopulateUsers(usersCount);
+        var dbUsers = await _dbContext.PopulateUsersAsync(usersCount);
         
         var userResponses = dbUsers.Select(u => new UserResponse
         (
@@ -58,5 +58,5 @@ public class GetAllUsersTests(UniProWebApplicationFactory factory) : IAsyncLifet
 
     public Task InitializeAsync() => Task.CompletedTask;
 
-    public Task DisposeAsync() => _resetDatabase();
+    public async Task DisposeAsync() => await _resetDatabase();
 }

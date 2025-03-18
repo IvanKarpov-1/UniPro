@@ -48,7 +48,7 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
     public async Task Put_WhenNoUserWithProvidedId_ReturnNotFoundProblem()
     {
         // Arrange
-        await _dbContext.PopulateUsers(1);
+        await _dbContext.PopulateUsersAsync(1);
         var userId = _autoFaker.Generate<Guid>().ToString();
         _client.AddClaims([new Claim(ClaimTypes.NameIdentifier, userId)]);
 
@@ -65,7 +65,7 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
     public async Task Put_WhenUserWithProvidedIdButEmptyRequestValues_ReturnBadRequestProblem()
     {
         // Arrange
-        var dbUser = (await _dbContext.PopulateUsers(1))[0];
+        var dbUser = (await _dbContext.PopulateUsersAsync(1))[0];
         var userId = dbUser.UserId;
         _client.AddClaims([new Claim(ClaimTypes.NameIdentifier, userId)]);
 
@@ -85,7 +85,7 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
     public async Task Put_WhenUserWithProvidedIdAndCorrectRequestValues_ReturnNoContent(string? avatar, string? phoneNumber)
     {
         // Arrange
-        var dbUser = (await _dbContext.PopulateUsers(1))[0];
+        var dbUser = (await _dbContext.PopulateUsersAsync(1))[0];
         var userId = dbUser.UserId;
         _client.AddClaims([new Claim(ClaimTypes.NameIdentifier, userId)]);
 
@@ -103,10 +103,9 @@ public class UpdateUserTests(UniProWebApplicationFactory factory) : IAsyncLifeti
     }
 
     public Task InitializeAsync() => Task.CompletedTask;
-
-    public Task DisposeAsync()  {
-        _resetDatabase();
+    
+    public async Task DisposeAsync() {
+        await _resetDatabase();
         _client.RemoveTestHeaders();
-        return Task.CompletedTask;
     }
 }

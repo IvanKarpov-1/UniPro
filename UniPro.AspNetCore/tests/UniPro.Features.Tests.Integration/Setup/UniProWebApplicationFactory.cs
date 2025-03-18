@@ -18,7 +18,7 @@ public class UniProWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
     public HttpClient HttpClient { get; private set; } = default!;
 
     public UniProDbContext DbContext { get; private set; } = default!;
-    
+
     private readonly PostgreSqlContainer _dbContainer
         = new PostgreSqlBuilder()
             .WithImage(new PostgreSqlConfiguration().Image)
@@ -60,16 +60,16 @@ public class UniProWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
         await _dbContainer.StartAsync();
         var script = await File.ReadAllTextAsync("Setup/super_tokens_tables.sql");
         await _dbContainer.ExecScriptAsync(script);
-        
+
         _dbConnection = new NpgsqlConnection(_dbContainer.GetConnectionString());
         await InitializeRespawner();
-        
+
         var optionsBuilder = new DbContextOptionsBuilder<UniProDbContext>()
             .EnableSensitiveDataLogging()
             .UseNpgsql(_dbContainer.GetConnectionString())
             .UseSnakeCaseNamingConvention();
         DbContext = new UniProDbContext(optionsBuilder.Options);
-        
+
         HttpClient = CreateClient();
     }
 

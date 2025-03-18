@@ -46,7 +46,7 @@ public sealed class AddUniversityCommandHandler(
             Name = request.UniversityName,
         };
         
-        await dbContext.Universities.AddAsync(newUniversity, cancellationToken);
+        dbContext.Universities.Add(newUniversity);
         
         var result = await dbContext.SaveChangesAsync(cancellationToken);
         

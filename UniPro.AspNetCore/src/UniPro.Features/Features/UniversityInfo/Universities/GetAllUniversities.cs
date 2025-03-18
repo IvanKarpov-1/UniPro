@@ -14,8 +14,7 @@ using UniPro.Infrastructure.Database;
 
 namespace UniPro.Features.Features.UniversityInfo.Universities;
 
-internal sealed record GetAllUniversitiesQuery()
-    : IRequest<Result<List<UniversityResponse>>>;
+internal sealed record GetAllUniversitiesQuery : IRequest<Result<List<UniversityResponse>>>;
 
 internal sealed class GetAllUniversitiesQueryHandler(
 UniProDbContext dbContext)
@@ -25,10 +24,9 @@ UniProDbContext dbContext)
     {
         var universities = await dbContext
             .Universities
-            .ProjectToType<UniversityResponse>()
             .ToListAsync(cancellationToken);
         
-        return universities;
+        return universities.Adapt<List<UniversityResponse>>();
     }
 }
 

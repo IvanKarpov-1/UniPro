@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using UniPro.Domain.Entities;
 using UniPro.Domain.Entities.SuperTokens;
 using UniPro.Infrastructure.Database;
+using Task = System.Threading.Tasks.Task;
 
 namespace UniPro.Features.Tests.Integration;
 
@@ -14,7 +16,7 @@ public static class DbHelper
 
     private static readonly AutoFaker AutoFaker = new();
 
-    public static async Task<List<User>> PopulateUsers(this UniProDbContext dbContext, int usersCount = 2)
+    public static async Task<List<User>> PopulateUsersAsync(this UniProDbContext dbContext, int usersCount = 2)
     {
         var userIds = new List<string>();
 
@@ -23,13 +25,13 @@ public static class DbHelper
             userIds.Add(AutoFaker.Generate<Guid>().ToString());
         }
 
-        var stAppIdToUserIdFaker = new Faker<StAppIdToUserId>()
+        var stAppIdToUserId = new Faker<StAppIdToUserId>()
             .RuleFor(s => s.AppId, "public")
             .RuleFor(s => s.UserId, f => userIds[f.IndexFaker % usersCount])
             .RuleFor(s => s.RecipeId, f => userIds[f.IndexFaker % usersCount])
             .RuleFor(s => s.PrimaryOrRecipeUserId, f => userIds[f.IndexFaker % usersCount])
             .Generate(usersCount);
-        dbContext.StAppIdToUserIds.AddRange(stAppIdToUserIdFaker);
+        dbContext.StAppIdToUserIds.AddRange(stAppIdToUserId);
 
         var faker = new Faker<User>();
         var dbUsers = faker
@@ -50,7 +52,7 @@ public static class DbHelper
         return dbUsers;
     }
 
-    public static async Task<PopulateUniversityInfoResult> PopulateUniversityInfo(this UniProDbContext dbContext)
+    public static async Task<PopulateUniversityInfoResult> PopulateUniversityInfoAsync(this UniProDbContext dbContext)
     {
         var university = new Faker<University>()
             .RuleFor(u => u.UniversityId, AutoFaker.Generate<int>())
@@ -59,16 +61,19 @@ public static class DbHelper
         var academic = new Faker<Academic>()
             .RuleFor(a => a.AcademicId, AutoFaker.Generate<int>())
             .RuleFor(a => a.Name, f => f.Company.CompanyName())
+            .RuleFor(a => a.University, university)
             .RuleFor(a => a.UniversityId, university.UniversityId)
             .Generate();
         var department = new Faker<Department>()
             .RuleFor(d => d.DepartmentId, AutoFaker.Generate<int>())
             .RuleFor(d => d.Name, f => f.Company.CompanyName())
+            .RuleFor(d => d.Academic, academic)
             .RuleFor(d => d.AcademicId, academic.AcademicId)
             .Generate();
         var studentGroup = new Faker<StudentGroup>()
             .RuleFor(s => s.StudentGroupId, AutoFaker.Generate<int>())
-            .RuleFor(s => s.Name, f => f.Company.CompanyName())
+            .RuleFor(s => s.Name, f => f.Lorem.Word())
+            .RuleFor(s => s.Department, department)
             .RuleFor(s => s.DepartmentId, department.DepartmentId)
             .Generate();
 
@@ -85,5 +90,15 @@ public static class DbHelper
             academic, 
             department,
             studentGroup);
+    }
+
+    public static async Task CleanDbAsync(this UniProDbContext dbContext)
+    {
+        var universitiesToClean = await dbContext.Universities.ToListAsync();
+        foreach (var university in universitiesToClean)
+        {
+            dbContext.Universities.Remove(university);
+        }
+        await dbContext.SaveChangesAsync();
     }
 }

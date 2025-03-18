@@ -49,7 +49,6 @@ public sealed class DeleteUniversityEndpoint : ICarterModule
         app.MapDelete("/api/universities/{universityId:int}", Handler)
             .RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status403Forbidden)
             .ProducesProblem(StatusCodes.Status404NotFound)

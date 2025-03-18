@@ -32,7 +32,7 @@ public class GetUserTests(UniProWebApplicationFactory factory) : IAsyncLifetime
     public async Task Get_WhenUsersInDbButWithoutUserWithProvidedId_ReturnsNotFoundProblem()
     {
         // Arrange
-        await _dbContext.PopulateUsers(1);
+        await _dbContext.PopulateUsersAsync(1);
         var userId = _autoFaker.Generate<Guid>().ToString();
 
         // Act
@@ -46,7 +46,7 @@ public class GetUserTests(UniProWebApplicationFactory factory) : IAsyncLifetime
     public async Task Get_WhenUserWithProvidedId_ReturnsUserResponse()
     {
         // Arrange
-        var dbUser = (await _dbContext.PopulateUsers(1))[0];
+        var dbUser = (await _dbContext.PopulateUsersAsync(1))[0];
         var userId = dbUser.UserId;
 
         var userResponse = new UserResponse
@@ -76,7 +76,7 @@ public class GetUserTests(UniProWebApplicationFactory factory) : IAsyncLifetime
     public async Task Get_WhenUserWithProvidedIdAndRole_ReturnsUserResponse(string role)
     {
         // Arrange
-        var dbUser = (await _dbContext.PopulateUsers(1))[0];
+        var dbUser = (await _dbContext.PopulateUsersAsync(1))[0];
         var userId = dbUser.UserId;
 
         var userRole = new StUserRole
@@ -89,7 +89,7 @@ public class GetUserTests(UniProWebApplicationFactory factory) : IAsyncLifetime
 
         _dbContext.StUserRoles.Add(userRole);
 
-        var populateUniversityInfoResult = await _dbContext.PopulateUniversityInfo();
+        var populateUniversityInfoResult = await _dbContext.PopulateUniversityInfoAsync();
 
         var teacherInfo = new Faker<TeacherInfo>()
             .RuleFor(t => t.TeacherId, dbUser.UserId)
@@ -145,5 +145,5 @@ public class GetUserTests(UniProWebApplicationFactory factory) : IAsyncLifetime
 
     public Task InitializeAsync() => Task.CompletedTask;
 
-    public Task DisposeAsync() => _resetDatabase();
+    public async Task DisposeAsync() => await _resetDatabase();
 }
